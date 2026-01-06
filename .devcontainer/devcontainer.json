@@ -7,7 +7,7 @@
     "ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
   },
   "forwardPorts": [5173],
-  "postCreateCommand": "bun install",
+  "postCreateCommand": "bun install && git config --global user.name 'Michael Kuenneke' && git config --global user.email 'michael@kuenneke.cloud' && gh auth setup-git",
   "remoteUser": "bun",
   "runArgs": [
     "--userns=keep-id",
