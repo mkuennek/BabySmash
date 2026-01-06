@@ -10,7 +10,7 @@ This web-based re-implementation brings the joy of BabySmash to any modern brows
 
 ## Core Functionality
 
-- [ ] Display colorful letters when letter keys are pressed
+- [x] Display colorful letters when letter keys are pressed
 - [ ] Display numbers when number keys are pressed
 - [ ] Display shapes (circles, squares, triangles, stars) when other keys are pressed
 - [ ] Play sounds when keys are pressed
