@@ -127,6 +127,9 @@ function playShapeSound(): void {
 // Visual Display System
 // ============================================================================
 
+// Configuration
+const MAX_ELEMENTS = 30 // Clear screen after this many elements
+
 // Baby-friendly color palette - bright, high-contrast colors
 const COLORS = [
   '#FF6B6B', // Red
@@ -154,6 +157,33 @@ interface DisplayedElement {
 }
 
 const displayedElements: DisplayedElement[] = []
+
+// Clear all elements from the screen with a fade-out effect
+function clearAllElements(): void {
+  const app = document.querySelector<HTMLDivElement>('#app')!
+  
+  // Add fade-out class to all elements
+  displayedElements.forEach(({ element }) => {
+    element.classList.add('fade-out')
+  })
+  
+  // Remove elements after animation completes
+  setTimeout(() => {
+    displayedElements.forEach(({ element }) => {
+      if (element.parentNode === app) {
+        app.removeChild(element)
+      }
+    })
+    displayedElements.length = 0 // Clear the array
+  }, 500) // Match the CSS animation duration
+}
+
+// Check if we need to clear the screen
+function checkAndClearScreen(): void {
+  if (displayedElements.length >= MAX_ELEMENTS) {
+    clearAllElements()
+  }
+}
 
 // Get a random color from the palette
 function getRandomColor(): string {
@@ -294,6 +324,9 @@ function displayShape(): void {
     element: shapeContainer,
     createdAt: Date.now(),
   })
+  
+  // Check if we need to clear the screen
+  checkAndClearScreen()
 }
 
 // Display a character (letter or number) on screen
@@ -322,6 +355,9 @@ function displayCharacter(character: string, className: string): void {
     element: characterElement,
     createdAt: Date.now(),
   })
+  
+  // Check if we need to clear the screen
+  checkAndClearScreen()
 }
 
 // Check if the pressed key is a letter

@@ -15,10 +15,10 @@ This web-based re-implementation brings the joy of BabySmash to any modern brows
 - [x] Display shapes (circles, squares, triangles, stars) when other keys are pressed
 - [x] Play sounds when keys are pressed
 - [x] Animate elements appearing on screen (dancing/floating effect)
-- [ ] Elements should appear at random positions on screen
-- [ ] Elements should have random colors
-- [ ] Elements should have varying sizes
-- [ ] Clear the screen after a configurable number of elements
+- [x] Elements should appear at random positions on screen
+- [x] Elements should have random colors
+- [x] Elements should have varying sizes
+- [x] Clear the screen after a configurable number of elements
 
 ## Visual Effects
 
