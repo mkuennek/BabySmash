@@ -46,8 +46,8 @@ function getRandomRotation(): number {
   return -30 + Math.random() * 60 // -30 to 30 degrees
 }
 
-// Display a letter on screen
-function displayLetter(letter: string): void {
+// Display a character (letter or number) on screen
+function displayCharacter(character: string, className: string): void {
   const app = document.querySelector<HTMLDivElement>('#app')!
   
   const position = getRandomPosition()
@@ -55,20 +55,20 @@ function displayLetter(letter: string): void {
   const color = getRandomColor()
   const rotation = getRandomRotation()
   
-  const letterElement = document.createElement('div')
-  letterElement.className = 'letter'
-  letterElement.textContent = letter.toUpperCase()
-  letterElement.style.left = `${position.x}px`
-  letterElement.style.top = `${position.y}px`
-  letterElement.style.fontSize = `${fontSize}px`
-  letterElement.style.color = color
-  letterElement.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`
-  letterElement.style.textShadow = `3px 3px 6px rgba(0, 0, 0, 0.3)`
+  const characterElement = document.createElement('div')
+  characterElement.className = className
+  characterElement.textContent = character.toUpperCase()
+  characterElement.style.left = `${position.x}px`
+  characterElement.style.top = `${position.y}px`
+  characterElement.style.fontSize = `${fontSize}px`
+  characterElement.style.color = color
+  characterElement.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`
+  characterElement.style.textShadow = `3px 3px 6px rgba(0, 0, 0, 0.3)`
   
-  app.appendChild(letterElement)
+  app.appendChild(characterElement)
   
   displayedLetters.push({
-    element: letterElement,
+    element: characterElement,
     createdAt: Date.now(),
   })
 }
@@ -78,13 +78,20 @@ function isLetterKey(key: string): boolean {
   return /^[a-zA-Z]$/.test(key)
 }
 
+// Check if the pressed key is a number
+function isNumberKey(key: string): boolean {
+  return /^[0-9]$/.test(key)
+}
+
 // Handle keyboard events
 function handleKeyDown(event: KeyboardEvent): void {
   // Prevent default browser behavior for all keys
   event.preventDefault()
   
   if (isLetterKey(event.key)) {
-    displayLetter(event.key)
+    displayCharacter(event.key, 'letter')
+  } else if (isNumberKey(event.key)) {
+    displayCharacter(event.key, 'number')
   }
 }
 
