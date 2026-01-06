@@ -280,9 +280,10 @@ function displayShape(): void {
   
   const shapeContainer = document.createElement('div')
   shapeContainer.className = 'shape'
+  // Use left/top for positioning, CSS custom property for initial rotation
   shapeContainer.style.left = `${position.x}px`
   shapeContainer.style.top = `${position.y}px`
-  shapeContainer.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`
+  shapeContainer.style.setProperty('--initial-rotation', `${rotation}deg`)
   
   const shapeSVG = createShapeSVG(shapeType, size, color)
   shapeContainer.appendChild(shapeSVG)
@@ -307,11 +308,12 @@ function displayCharacter(character: string, className: string): void {
   const characterElement = document.createElement('div')
   characterElement.className = className
   characterElement.textContent = character.toUpperCase()
+  // Use left/top for positioning, CSS custom property for initial rotation
   characterElement.style.left = `${position.x}px`
   characterElement.style.top = `${position.y}px`
   characterElement.style.fontSize = `${fontSize}px`
   characterElement.style.color = color
-  characterElement.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`
+  characterElement.style.setProperty('--initial-rotation', `${rotation}deg`)
   characterElement.style.textShadow = `3px 3px 6px rgba(0, 0, 0, 0.3)`
   
   app.appendChild(characterElement)

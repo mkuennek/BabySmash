@@ -52,24 +52,107 @@ body {
 .letter,
 .number,
 .shape {
+  --initial-rotation: 0deg;
   position: absolute;
   font-weight: 900;
   pointer-events: none;
-  animation: pop-in 0.3s ease-out forwards;
-  will-change: transform, opacity;
+  /* Center the element on its position point */
+  transform: translate(-50%, -50%) rotate(var(--initial-rotation));
+  animation: 
+    pop-in 0.3s ease-out forwards,
+    float-dance 3s ease-in-out 0.3s infinite;
+  will-change: transform, opacity, translate, rotate, scale;
 }
 
 @keyframes pop-in {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.3);
+    scale: 0.3;
   }
   50% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
+    scale: 1.2;
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    scale: 1;
+  }
+}
+
+/* Dancing/floating animation - gentle bobbing with rotation */
+@keyframes float-dance {
+  0%, 100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  25% {
+    translate: 10px -15px;
+    rotate: 5deg;
+  }
+  50% {
+    translate: -5px -25px;
+    rotate: -3deg;
+  }
+  75% {
+    translate: -10px -10px;
+    rotate: 4deg;
+  }
+}
+
+/* Variation 1: Different timing for visual variety */
+.letter:nth-child(3n+1),
+.number:nth-child(3n+1),
+.shape:nth-child(3n+1) {
+  animation: 
+    pop-in 0.3s ease-out forwards,
+    float-dance-alt1 3.5s ease-in-out 0.3s infinite;
+}
+
+/* Variation 2: Another timing variation */
+.letter:nth-child(3n+2),
+.number:nth-child(3n+2),
+.shape:nth-child(3n+2) {
+  animation: 
+    pop-in 0.3s ease-out forwards,
+    float-dance-alt2 2.8s ease-in-out 0.3s infinite;
+}
+
+/* Alternative floating pattern 1 */
+@keyframes float-dance-alt1 {
+  0%, 100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  20% {
+    translate: -12px -10px;
+    rotate: -4deg;
+  }
+  40% {
+    translate: 8px -20px;
+    rotate: 6deg;
+  }
+  60% {
+    translate: -6px -28px;
+    rotate: -2deg;
+  }
+  80% {
+    translate: 10px -12px;
+    rotate: 3deg;
+  }
+}
+
+/* Alternative floating pattern 2 */
+@keyframes float-dance-alt2 {
+  0%, 100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  33% {
+    translate: 15px -18px;
+    rotate: -5deg;
+  }
+  66% {
+    translate: -8px -22px;
+    rotate: 4deg;
   }
 }

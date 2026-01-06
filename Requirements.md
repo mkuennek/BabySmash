@@ -14,7 +14,7 @@ This web-based re-implementation brings the joy of BabySmash to any modern brows
 - [x] Display numbers when number keys are pressed
 - [x] Display shapes (circles, squares, triangles, stars) when other keys are pressed
 - [x] Play sounds when keys are pressed
-- [ ] Animate elements appearing on screen (dancing/floating effect)
+- [x] Animate elements appearing on screen (dancing/floating effect)
 - [ ] Elements should appear at random positions on screen
 - [ ] Elements should have random colors
 - [ ] Elements should have varying sizes
