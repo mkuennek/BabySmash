@@ -1,0 +1,19 @@
+{
+  "name": "BabySmash",
+  "image": "oven/bun:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
+  },
+  "forwardPorts": [5173],
+  "postCreateCommand": "bun install",
+  "remoteUser": "bun",
+  "runArgs": [
+    "--userns=keep-id",
+    "-p", "5173:5173"
+  ],
+  "containerEnv": {
+    "HOME": "/home/bun"
+  }
+}
