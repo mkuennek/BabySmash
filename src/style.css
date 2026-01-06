@@ -172,3 +172,12 @@ body {
     scale: 0.5;
   }
 }
+
+/* Confetti particle styles */
+.confetti {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 2px;
+  will-change: transform, opacity, left, top;
+  z-index: 1000;
+}

@@ -22,7 +22,7 @@ This web-based re-implementation brings the joy of BabySmash to any modern brows
 
 ## Visual Effects
 
-- [ ] Show confetti effects on key presses
+- [x] Show confetti effects on key presses
 - [ ] Smooth animations for element appearance
 - [ ] Fade out animations when elements disappear
 - [ ] Support for full-screen mode

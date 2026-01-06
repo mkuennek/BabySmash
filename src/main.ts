@@ -124,6 +124,124 @@ function playShapeSound(): void {
 }
 
 // ============================================================================
+// Confetti System
+// ============================================================================
+
+const CONFETTI_COLORS = [
+  '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+  '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+  '#F8B500', '#00D4AA', '#FF69B4', '#00CED1', '#FFD700',
+]
+
+const CONFETTI_COUNT = 15 // Number of confetti particles per key press
+
+interface ConfettiParticle {
+  element: HTMLDivElement
+  x: number
+  y: number
+  vx: number
+  vy: number
+  rotation: number
+  rotationSpeed: number
+  scale: number
+  opacity: number
+}
+
+// Create a single confetti particle
+function createConfettiParticle(originX: number, originY: number): ConfettiParticle {
+  const element = document.createElement('div')
+  element.className = 'confetti'
+  
+  // Random color
+  const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]!
+  
+  // Random shape (rectangle or square)
+  const width = 8 + Math.random() * 8
+  const height = Math.random() > 0.5 ? width : width * 2
+  
+  element.style.width = `${width}px`
+  element.style.height = `${height}px`
+  element.style.backgroundColor = color
+  element.style.left = `${originX}px`
+  element.style.top = `${originY}px`
+  
+  return {
+    element,
+    x: originX,
+    y: originY,
+    vx: (Math.random() - 0.5) * 15, // Random horizontal velocity
+    vy: -8 - Math.random() * 10, // Initial upward velocity
+    rotation: Math.random() * 360,
+    rotationSpeed: (Math.random() - 0.5) * 15,
+    scale: 0.5 + Math.random() * 0.5,
+    opacity: 1,
+  }
+}
+
+// Animate confetti particles
+function animateConfetti(particles: ConfettiParticle[]): void {
+  const gravity = 0.4
+  const friction = 0.99
+  const fadeRate = 0.015
+  
+  function update(): void {
+    let activeCount = 0
+    
+    for (const particle of particles) {
+      if (particle.opacity <= 0) continue
+      
+      activeCount++
+      
+      // Apply physics
+      particle.vy += gravity
+      particle.vx *= friction
+      particle.x += particle.vx
+      particle.y += particle.vy
+      particle.rotation += particle.rotationSpeed
+      particle.opacity -= fadeRate
+      
+      // Update element position
+      particle.element.style.transform = `translate(-50%, -50%) rotate(${particle.rotation}deg) scale(${particle.scale})`
+      particle.element.style.left = `${particle.x}px`
+      particle.element.style.top = `${particle.y}px`
+      particle.element.style.opacity = String(Math.max(0, particle.opacity))
+    }
+    
+    if (activeCount > 0) {
+      requestAnimationFrame(update)
+    } else {
+      // Clean up particles when animation is done
+      for (const particle of particles) {
+        particle.element.remove()
+      }
+    }
+  }
+  
+  requestAnimationFrame(update)
+}
+
+// Spawn confetti at a given position
+function spawnConfetti(originX: number, originY: number): void {
+  const app = document.querySelector<HTMLDivElement>('#app')!
+  const particles: ConfettiParticle[] = []
+  
+  for (let i = 0; i < CONFETTI_COUNT; i++) {
+    const particle = createConfettiParticle(originX, originY)
+    particles.push(particle)
+    app.appendChild(particle.element)
+  }
+  
+  animateConfetti(particles)
+}
+
+// Spawn confetti at a random position on screen
+function spawnConfettiRandom(): void {
+  const x = 100 + Math.random() * (window.innerWidth - 200)
+  const y = 100 + Math.random() * (window.innerHeight - 200)
+  spawnConfetti(x, y)
+}
+
+// ============================================================================
 // Visual Display System
 // ============================================================================
 
@@ -378,13 +496,16 @@ function handleKeyDown(event: KeyboardEvent): void {
   if (isLetterKey(event.key)) {
     displayCharacter(event.key, 'letter')
     playLetterSound(event.key)
+    spawnConfettiRandom()
   } else if (isNumberKey(event.key)) {
     displayCharacter(event.key, 'number')
     playNumberSound(event.key)
+    spawnConfettiRandom()
   } else if (event.key.length === 1 || isDisplayableKey(event.key)) {
     // Display shapes for other printable keys and special keys
     displayShape()
     playShapeSound()
+    spawnConfettiRandom()
   }
 }
 
