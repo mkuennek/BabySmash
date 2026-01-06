@@ -8,6 +8,10 @@ The core concept is simple: when a baby smashes the keyboard, instead of acciden
 
 This web-based re-implementation brings the joy of BabySmash to any modern browser, making it accessible across all platforms without installation. It supports keyboard, mouse, and touch input, making it perfect for tablets and touch-screen devices where little fingers love to tap and swipe.
 
+## Fixes
+
+- [x] The sounds stopped working, fix it
+
 ## Core Functionality
 
 - [x] Display colorful letters when letter keys are pressed

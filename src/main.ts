@@ -7,13 +7,13 @@ import './style.css'
 let audioContext: AudioContext | null = null
 
 // Initialize audio context on first user interaction
-function getAudioContext(): AudioContext {
+async function getAudioContext(): Promise<AudioContext> {
   if (!audioContext) {
     audioContext = new AudioContext()
   }
   // Resume if suspended (browser autoplay policy)
   if (audioContext.state === 'suspended') {
-    audioContext.resume()
+    await audioContext.resume()
   }
   return audioContext
 }
@@ -49,8 +49,8 @@ const LETTER_FREQUENCIES: Record<string, number> = {
 }
 
 // Play a pleasant tone for letters
-function playLetterSound(letter: string): void {
-  const ctx = getAudioContext()
+async function playLetterSound(letter: string): Promise<void> {
+  const ctx = await getAudioContext()
   const frequency = LETTER_FREQUENCIES[letter.toLowerCase()] || 440
 
   const oscillator = ctx.createOscillator()
@@ -72,8 +72,8 @@ function playLetterSound(letter: string): void {
 }
 
 // Play a fun xylophone-like tone for numbers
-function playNumberSound(num: string): void {
-  const ctx = getAudioContext()
+async function playNumberSound(num: string): Promise<void> {
+  const ctx = await getAudioContext()
   // Map numbers 0-9 to a pentatonic scale for pleasant sounds
   const pentatonic = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00]
   const frequency = pentatonic[parseInt(num)] || 440
@@ -97,8 +97,8 @@ function playNumberSound(num: string): void {
 }
 
 // Play a fun "bloop" sound for shapes
-function playShapeSound(): void {
-  const ctx = getAudioContext()
+async function playShapeSound(): Promise<void> {
+  const ctx = await getAudioContext()
 
   // Random frequency in a fun range
   const baseFreq = 200 + Math.random() * 300
