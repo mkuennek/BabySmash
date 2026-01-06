@@ -1,5 +1,132 @@
 import './style.css'
 
+// ============================================================================
+// Audio System - Web Audio API for synthesized sounds
+// ============================================================================
+
+let audioContext: AudioContext | null = null
+
+// Initialize audio context on first user interaction
+function getAudioContext(): AudioContext {
+  if (!audioContext) {
+    audioContext = new AudioContext()
+  }
+  // Resume if suspended (browser autoplay policy)
+  if (audioContext.state === 'suspended') {
+    audioContext.resume()
+  }
+  return audioContext
+}
+
+// Musical notes for letters (C major scale extended)
+const LETTER_FREQUENCIES: Record<string, number> = {
+  a: 261.63, // C4
+  b: 293.66, // D4
+  c: 329.63, // E4
+  d: 349.23, // F4
+  e: 392.00, // G4
+  f: 440.00, // A4
+  g: 493.88, // B4
+  h: 523.25, // C5
+  i: 587.33, // D5
+  j: 659.25, // E5
+  k: 698.46, // F5
+  l: 783.99, // G5
+  m: 880.00, // A5
+  n: 987.77, // B5
+  o: 1046.50, // C6
+  p: 1174.66, // D6
+  q: 1318.51, // E6
+  r: 1396.91, // F6
+  s: 1567.98, // G6
+  t: 1760.00, // A6
+  u: 1975.53, // B6
+  v: 523.25, // C5
+  w: 587.33, // D5
+  x: 659.25, // E5
+  y: 698.46, // F5
+  z: 783.99, // G5
+}
+
+// Play a pleasant tone for letters
+function playLetterSound(letter: string): void {
+  const ctx = getAudioContext()
+  const frequency = LETTER_FREQUENCIES[letter.toLowerCase()] || 440
+
+  const oscillator = ctx.createOscillator()
+  const gainNode = ctx.createGain()
+
+  oscillator.connect(gainNode)
+  gainNode.connect(ctx.destination)
+
+  oscillator.type = 'sine'
+  oscillator.frequency.setValueAtTime(frequency, ctx.currentTime)
+
+  // Gentle attack and decay for a pleasing sound
+  gainNode.gain.setValueAtTime(0, ctx.currentTime)
+  gainNode.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05)
+  gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4)
+
+  oscillator.start(ctx.currentTime)
+  oscillator.stop(ctx.currentTime + 0.4)
+}
+
+// Play a fun xylophone-like tone for numbers
+function playNumberSound(num: string): void {
+  const ctx = getAudioContext()
+  // Map numbers 0-9 to a pentatonic scale for pleasant sounds
+  const pentatonic = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00]
+  const frequency = pentatonic[parseInt(num)] || 440
+
+  const oscillator = ctx.createOscillator()
+  const gainNode = ctx.createGain()
+
+  oscillator.connect(gainNode)
+  gainNode.connect(ctx.destination)
+
+  oscillator.type = 'triangle'
+  oscillator.frequency.setValueAtTime(frequency, ctx.currentTime)
+
+  // Quick attack, medium decay for xylophone effect
+  gainNode.gain.setValueAtTime(0, ctx.currentTime)
+  gainNode.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 0.02)
+  gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5)
+
+  oscillator.start(ctx.currentTime)
+  oscillator.stop(ctx.currentTime + 0.5)
+}
+
+// Play a fun "bloop" sound for shapes
+function playShapeSound(): void {
+  const ctx = getAudioContext()
+
+  // Random frequency in a fun range
+  const baseFreq = 200 + Math.random() * 300
+
+  const oscillator = ctx.createOscillator()
+  const gainNode = ctx.createGain()
+
+  oscillator.connect(gainNode)
+  gainNode.connect(ctx.destination)
+
+  oscillator.type = 'square'
+  
+  // Frequency sweep for a "bloop" effect
+  oscillator.frequency.setValueAtTime(baseFreq * 1.5, ctx.currentTime)
+  oscillator.frequency.exponentialRampToValueAtTime(baseFreq, ctx.currentTime + 0.1)
+
+  gainNode.gain.setValueAtTime(0, ctx.currentTime)
+  gainNode.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.02)
+  gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3)
+
+  oscillator.start(ctx.currentTime)
+  oscillator.stop(ctx.currentTime + 0.3)
+}
+
+// ============================================================================
+// Visual Display System
+// ============================================================================
+
 // Baby-friendly color palette - bright, high-contrast colors
 const COLORS = [
   '#FF6B6B', // Red
@@ -212,11 +339,14 @@ function handleKeyDown(event: KeyboardEvent): void {
   
   if (isLetterKey(event.key)) {
     displayCharacter(event.key, 'letter')
+    playLetterSound(event.key)
   } else if (isNumberKey(event.key)) {
     displayCharacter(event.key, 'number')
+    playNumberSound(event.key)
   } else if (event.key.length === 1 || isDisplayableKey(event.key)) {
     // Display shapes for other printable keys and special keys
     displayShape()
+    playShapeSound()
   }
 }
 
