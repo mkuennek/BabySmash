@@ -12,7 +12,7 @@ This web-based re-implementation brings the joy of BabySmash to any modern brows
 
 - [x] Display colorful letters when letter keys are pressed
 - [x] Display numbers when number keys are pressed
-- [ ] Display shapes (circles, squares, triangles, stars) when other keys are pressed
+- [x] Display shapes (circles, squares, triangles, stars) when other keys are pressed
 - [ ] Play sounds when keys are pressed
 - [ ] Animate elements appearing on screen (dancing/floating effect)
 - [ ] Elements should appear at random positions on screen

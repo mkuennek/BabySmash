@@ -50,7 +50,8 @@ body {
 }
 
 .letter,
-.number {
+.number,
+.shape {
   position: absolute;
   font-weight: 900;
   pointer-events: none;
